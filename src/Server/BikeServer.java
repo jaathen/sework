@@ -7,9 +7,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-/**
- * Created by ASUS on 2017/3/27.
- */
+
 public class BikeServer {
    int PORT;
    public BikeServer(int port) {
