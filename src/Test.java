@@ -3,9 +3,6 @@ import org.json.JSONObject;
 import java.io.PrintStream;
 import java.net.Socket;
 
-/**
- * Created by ASUS on 2017/3/30.
- */
 public class Test {
     public static void main(String[] args) throws Exception{
         Socket socket = new Socket("localhost", 8080);

@@ -8,9 +8,6 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 
-/**
- * Created by ASUS on 2017/3/28.
- */
 public class BikeClientInitializer extends ChannelInitializer {
     @Override
     protected void initChannel(Channel channel) throws Exception {

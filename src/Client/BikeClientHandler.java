@@ -8,9 +8,7 @@ import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by ASUS on 2017/3/28.
- */
+
 public class BikeClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -40,7 +38,7 @@ public class BikeClientHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
-    public void sendHeart(ChannelHandlerContext ctx) {
+    private void sendHeart(ChannelHandlerContext ctx) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("function","heart");
         ctx.channel().writeAndFlush(jsonObject.toString() + "\r\n");
