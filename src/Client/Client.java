@@ -35,7 +35,7 @@ public class Client implements Runnable{
      *
      * @throws InterruptedException
      */
-    private static void doConnect() throws InterruptedException {
+    public static void doConnect() throws InterruptedException {
         ch = bootstrap.connect("127.0.0.1", 8080).sync().channel();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("function", "Init");
