@@ -6,13 +6,11 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.json.JSONObject;
 
-/**
- * Created by ASUS on 2017/3/28.
- */
 public class Client implements Runnable{
     private static Channel ch;
     private static Bootstrap bootstrap;
     static int id;
+    @Override
     public  void run() {
         NioEventLoopGroup workGroup = new NioEventLoopGroup();
         try {
@@ -37,7 +35,7 @@ public class Client implements Runnable{
      *
      * @throws InterruptedException
      */
-    public static void doConnect() throws InterruptedException {
+    private static void doConnect() throws InterruptedException {
         ch = bootstrap.connect("127.0.0.1", 8080).sync().channel();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("function", "Init");
