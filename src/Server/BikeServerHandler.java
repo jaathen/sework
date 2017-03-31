@@ -10,13 +10,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by ASUS on 2017/3/28.
- */
+
 public class BikeServerHandler extends ChannelInboundHandlerAdapter {
     private int counter = 0;
-    static Map<Integer, Channel> mapId = new HashMap<>();
-    static Map<Channel, Integer> mapChannel = new HashMap<>();
+    private static Map<Integer, Channel> mapId = new HashMap<>();
+    private static Map<Channel, Integer> mapChannel = new HashMap<>();
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println(ctx.channel().remoteAddress() + "online");
