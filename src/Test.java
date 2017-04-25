@@ -11,5 +11,7 @@ public class Test {
         jsonObject.put("bid", 1);
         PrintStream printStream = new PrintStream(socket.getOutputStream());
         printStream.println(jsonObject.toString() + "\r\n");
+        printStream.close();
+        socket.close();
     }
 }

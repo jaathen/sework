@@ -15,12 +15,15 @@ public class BikeClientHandler extends ChannelInboundHandlerAdapter {
         String s = (String) msg;
         try {
             JSONObject jsonObject = new JSONObject(s);
-            Client.id = jsonObject.getInt("id");
-            System.out.println(Client.id);
+            if (jsonObject.getString("function").equals("postbid")) {
+                Client.id = jsonObject.getInt("id");
+                System.out.println(Client.id);
+            } else if (jsonObject.getString("function").equals("sent")) {
+                System.out.println(jsonObject);
+            }
         } catch (JSONException e) {
 
         }
-        System.out.println(s);
     }
 
 

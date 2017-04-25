@@ -45,13 +45,18 @@ public class BikeServerHandler extends ChannelInboundHandlerAdapter {
             mapChannel.put(ctx.channel(), bid);
             JSONObject tmp = new JSONObject();
             tmp.put("id", bid);
+            tmp.put("function", "postbid");
             ctx.channel().writeAndFlush(tmp.toString() + "\r\n");
         } else if (jsonObject.getString("function").equals("sent")) {
             System.out.println("sent");
             if (mapId.get(jsonObject.getInt("bid")).isActive()) {
-                mapId.get(jsonObject.getInt("bid")).writeAndFlush("unlock" + "\r\n");
+                mapId.get(jsonObject.getInt("bid")).writeAndFlush(jsonObject.toString() + "\r\n");
             }
 
+        }
+        String function = jsonObject.getString("function");
+        switch (function) {
+            case "register":
         }
     }
 
@@ -60,7 +65,10 @@ public class BikeServerHandler extends ChannelInboundHandlerAdapter {
         if (evt instanceof IdleStateEvent) {
             if (counter >= 3) {
                 ctx.channel().close().sync();
-                System.out.println(ctx.channel().remoteAddress() + "down line");
+                int bid = mapChannel.get(ctx.channel());
+                mapChannel.remove(ctx.channel());
+                mapId.remove(bid);
+                System.out.println(ctx.channel().remoteAddress() + "down line" + "and removed");
             } else {
                 counter++;
                 System.out.println(ctx.channel().remoteAddress() + "lost " + counter + " heart");
