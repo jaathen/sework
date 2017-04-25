@@ -1,5 +1,6 @@
 package Server;
 
+import Dao.LoginDao;
 import Dao.RegisterDao;
 import entity.Bike;
 import io.netty.channel.Channel;
@@ -7,7 +8,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,30 +36,45 @@ public class BikeServerHandler extends ChannelInboundHandlerAdapter {
         counter = 0;
         String s = (String) msg;
         JSONObject jsonObject = new JSONObject(s);
-        if (jsonObject.getString("function").equals("heart")) {
-            System.out.println("heart");
-            heartHandler(ctx, jsonObject);
-        } else if (jsonObject.getString("function").equals("Init")){
-            System.out.println("Init");
-            int bid = Bike.getNewid();
-            mapId.put(bid, ctx.channel());
-            mapChannel.put(ctx.channel(), bid);
-            JSONObject tmp = new JSONObject();
-            tmp.put("id", bid);
-            tmp.put("function", "postbid");
-            ctx.channel().writeAndFlush(tmp.toString() + "\r\n");
-        } else if (jsonObject.getString("function").equals("sent")) {
-            System.out.println("sent");
-            if (mapId.get(jsonObject.getInt("bid")).isActive()) {
-                mapId.get(jsonObject.getInt("bid")).writeAndFlush(jsonObject.toString() + "\r\n");
-            }
-
-        }
+//        if (jsonObject.getString("function").equals("heart")) {
+//            System.out.println("heart");
+//            heartHandler(ctx, jsonObject);
+//        } else if (jsonObject.getString("function").equals("Init")){
+//            System.out.println("Init");
+//            int bid = Bike.getNewid();
+//            mapId.put(bid, ctx.channel());
+//            mapChannel.put(ctx.channel(), bid);
+//            JSONObject tmp = new JSONObject();
+//            tmp.put("id", bid);
+//            tmp.put("function", "postbid");
+//            ctx.channel().writeAndFlush(tmp.toString() + "\r\n");
+//        } else if (jsonObject.getString("function").equals("sent")) {
+//            System.out.println("sent");
+//            if (mapId.get(jsonObject.getInt("bid")).isActive()) {
+//                mapId.get(jsonObject.getInt("bid")).writeAndFlush(jsonObject.toString() + "\r\n");
+//            }
+//        }
         String function = jsonObject.getString("function");
         JSONObject jsonOut = new JSONObject();
         switch (function) {
-            case "register": jsonOut = RegisterDao.registerDao(jsonObject);
+            case "heart": heartHandler(ctx,jsonObject);break;
+            case "Init":
+                int bid = Bike.getNewid();
+                mapId.put(bid, ctx.channel());
+                mapChannel.put(ctx.channel(), bid);
+                jsonOut.put("id", bid);
+                jsonOut.put("function", "postbid");
+                break;
+            case "sent":
+                if (mapId.get(jsonObject.getInt("bid")).isActive()) {
+                    mapId.get(jsonObject.getInt("bid")).writeAndFlush(jsonObject.toString() + "\r\n");
+                }
+                jsonOut.put("return", true);
+                break;
+            case "register": jsonOut = RegisterDao.registerDao(jsonObject);break;
+            case "login": jsonOut = LoginDao.loginDao(jsonObject);break;
         }
+        ctx.channel().writeAndFlush(jsonOut.toString() + "\r\n");
     }
 
     @Override
