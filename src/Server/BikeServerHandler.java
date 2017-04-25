@@ -1,5 +1,6 @@
 package Server;
 
+import Dao.RegisterDao;
 import entity.Bike;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -55,8 +56,9 @@ public class BikeServerHandler extends ChannelInboundHandlerAdapter {
 
         }
         String function = jsonObject.getString("function");
+        JSONObject jsonOut = new JSONObject();
         switch (function) {
-            case "register":
+            case "register": jsonOut = RegisterDao.registerDao(jsonObject);
         }
     }
 
